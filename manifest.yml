@@ -1,0 +1,14 @@
+---
+applications:
+  - name: rsc-sample-cf-spring-cache
+    buildpack: https://github.com/cloudfoundry/java-buildpack.git
+    host: rsc-sample-cf-spring-cache
+    path: target/sampleCFSpringBootWithCacheFramework-1.0.0.jar
+    instances: 2
+    memory: 512M
+    timeout: 180
+    services:
+    - rsc-uaa
+    - rsc-redis
+env:
+   MEMORY_LIMIT: 1G
