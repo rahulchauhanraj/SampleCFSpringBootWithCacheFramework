@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:oauth="http://www.springframework.org/schema/security/oauth2"
+       xmlns:sec="http://www.springframework.org/schema/security"
+
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+        http://www.springframework.org/schema/security/oauth2 http://www.springframework.org/schema/security/spring-security-oauth2.xsd
+        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd">
+
+    <sec:authentication-manager />
+
+    <http pattern="/*" xmlns="http://www.springframework.org/schema/security" security="none" request-matcher="ant">
+
+    </http>
+
+    <http pattern="/device/**" request-matcher="ant"
+          xmlns="http://www.springframework.org/schema/security"
+          disable-url-rewriting="true" use-expressions="true"
+          entry-point-ref="preAuthenticationEntryPoint">
+
+        <intercept-url pattern="/device/**" access="permitAll()" />
+
+        <headers>
+            <cache-control />
+            <content-type-options />
+            <hsts />
+            <frame-options />
+            <xss-protection />
+        </headers>
+    </http>
+
+    <!-- ************************************* -->
+    <bean id="filterChainProxy" class="org.springframework.security.web.FilterChainProxy">
+        <sec:filter-chain-map>
+            <sec:filter-chain pattern="/device/**" filters="oauth2ResourceServerFilter,authenticationFilter"/>
+        </sec:filter-chain-map>
+    </bean>
+
+    <!-- OAuth2 Related Configuration : Begin -->
+    <oauth:resource-server id="oauth2ResourceServerFilter"
+                           token-services-ref="remoteTokenServices" />
+
+
+    <!-- This component is used by spring security to validate authentication
+        tokens in requests -->
+    <bean id="authenticationFilter" class="com.rah.sample.filter.AuthenticationFilter">
+        <!-- <property name="tokenScope" value="application-write"/> -->
+        <property name="tokenScope" value="predixkit.admin"/>
+    </bean>
+
+    <bean id="remoteTokenServices" class="com.ge.predix.uaa.token.lib.FastTokenServices">
+        <property name="useHttps" value="true" />
+        <property name="storeClaims" value="true" />
+        <property name="trustedIssuers">
+            <list>
+                <value>${accessTokenEndpointUrl}</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="preAuthenticationEntryPoint"
+          class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint" />
+
+</beans>
