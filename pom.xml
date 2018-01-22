@@ -28,18 +28,39 @@
 
     <dependencies>
 
-        <!-- STUF Related -->
-        <dependency>
-            <groupId>com.ge.stuf</groupId>
-            <artifactId>stuf-spring-security-extensions</artifactId>
-            <version>${stuf.version}</version>
-        </dependency>
-
         <!-- Predix UAA Token Related -->
         <dependency>
             <groupId>com.ge.predix</groupId>
             <artifactId>uaa-token-lib</artifactId>
             <version>${uaa-lib.version}</version>
+        </dependency>
+
+        <!-- spring-data-redis -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <version>2.0.0.RELEASE</version>
+        </dependency>
+
+        <!-- redis.clients/jedis -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.9.0</version>
+        </dependency>
+
+        <!-- javax.inject -->
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>1</version>
+        </dependency>
+
+        <!-- Guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>23.0</version>
         </dependency>
 
         <!-- Spring-cloud-service-connector -->
